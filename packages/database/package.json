@@ -4,16 +4,22 @@
   "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "prisma": "pnpm with-env prisma",
     "with-env": "dotenv -e ../../.env --"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@saas/eslint": "workspace:*",
     "@saas/prettier": "workspace:*",
     "@saas/tsconfig": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
     "dotenv-cli": "^7.4.3",
-    "prisma": "^5.22.0"
+    "prisma": "^5.22.0",
+    "tsx": "^4.19.2"
   },
   "eslintConfig": {
     "extends": [
@@ -24,6 +30,7 @@
   "dependencies": {
     "@casl/ability": "^6.7.2",
     "@prisma/client": "5.22.0",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "zod": "^3.23.8"
   }
