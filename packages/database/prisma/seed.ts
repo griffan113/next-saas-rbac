@@ -40,7 +40,7 @@ async function seed() {
       domain: 'acme.com',
       slug: 'acme-admin',
       avatarUrl: faker.image.avatarGitHub(),
-      shouldAttachUsersByDomain: false,
+      shouldAttachUsersByDomain: true,
       ownerId: user.id,
       projects: {
         createMany: {

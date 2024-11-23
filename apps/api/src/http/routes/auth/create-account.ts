@@ -10,6 +10,8 @@ export async function createAccount(app: FastifyInstance) {
     '/',
     {
       schema: {
+        tags: ['Auth'],
+        summary: 'Create a new account',
         body: z.object({
           name: z.string(),
           email: z.string().email(),
@@ -25,12 +27,19 @@ export async function createAccount(app: FastifyInstance) {
       })
 
       if (userWithSameEmail)
-        reply
-          .status(StatusCodes.BAD_REQUEST)
-          .send({
-            statusCode: StatusCodes.BAD_REQUEST,
-            message: 'Este e-mail já está sendo utilizado.',
-          })
+        reply.status(StatusCodes.BAD_REQUEST).send({
+          statusCode: StatusCodes.BAD_REQUEST,
+          message: 'Este e-mail já está sendo utilizado.',
+        })
+
+      const [, domain] = email.split('@')
+
+      const autoJoinOrganization = await prisma.organization.findFirst({
+        where: {
+          domain,
+          shouldAttachUsersByDomain: true,
+        },
+      })
 
       // 6 - Força do hash
       const passwordHash = await hash(password, 6)
@@ -40,6 +49,9 @@ export async function createAccount(app: FastifyInstance) {
           name,
           email,
           passwordHash,
+          memberships: autoJoinOrganization
+            ? { create: { organizationId: autoJoinOrganization.id } }
+            : undefined,
         },
       })
 
