@@ -1,8 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod'
 import { StatusCodes } from 'http-status-codes'
-import { BadRequestError } from './_errors/bad-request-error'
-import { UnauthorizedError } from './_errors/unauthorized-error'
+import { GenericError } from './_errors/generic-error'
 
 type FastifyErrorHandler = FastifyInstance['errorHandler']
 
@@ -15,16 +14,9 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
     })
   }
 
-  if (error instanceof BadRequestError) {
-    return reply.status(StatusCodes.BAD_REQUEST).send({
-      statusCode: StatusCodes.BAD_REQUEST,
-      message: error.message,
-    })
-  }
-
-  if (error instanceof UnauthorizedError) {
-    return reply.status(StatusCodes.UNAUTHORIZED).send({
-      statusCode: StatusCodes.UNAUTHORIZED,
+  if (error instanceof GenericError) {
+    return reply.status(error.statusCode).send({
+      statusCode: error.statusCode,
       message: error.message,
     })
   }
