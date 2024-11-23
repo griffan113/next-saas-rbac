@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { StatusCodes } from 'http-status-codes'
 import z from 'zod'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function getProfile(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -22,10 +23,6 @@ export async function getProfile(app: FastifyInstance) {
               })
               .nullable(),
           }),
-          [StatusCodes.BAD_REQUEST]: z.object({
-            statusCode: z.number(),
-            message: z.literal('Usuário não encontrado'),
-          }),
         },
       },
     },
@@ -37,11 +34,7 @@ export async function getProfile(app: FastifyInstance) {
         where: { id: sub },
       })
 
-      if (!user)
-        return reply.status(StatusCodes.BAD_REQUEST).send({
-          statusCode: StatusCodes.BAD_REQUEST,
-          message: 'Usuário não encontrado',
-        })
+      if (!user) throw new BadRequestError('Usuário não encontrado')
 
       return reply.send({ user })
     }

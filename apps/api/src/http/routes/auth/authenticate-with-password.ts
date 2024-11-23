@@ -1,9 +1,10 @@
 import { prisma } from '@saas/database'
-import { compare, hash } from 'bcryptjs'
+import { compare } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { StatusCodes } from 'http-status-codes'
 import { z } from 'zod'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function authenticateWithPassword(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -15,10 +16,6 @@ export async function authenticateWithPassword(app: FastifyInstance) {
         response: {
           [StatusCodes.CREATED]: z.object({
             token: z.string(),
-          }),
-          [StatusCodes.BAD_REQUEST]: z.object({
-            statusCode: z.number(),
-            message: z.string(),
           }),
         },
         body: z.object({
@@ -34,28 +31,19 @@ export async function authenticateWithPassword(app: FastifyInstance) {
         where: { email },
       })
 
-      if (!userFromEmail)
-        return reply.status(StatusCodes.BAD_REQUEST).send({
-          statusCode: StatusCodes.BAD_REQUEST,
-          message: 'Credenciais inválidas.',
-        })
+      if (!userFromEmail) throw new BadRequestError('Credenciais inválidas.')
 
       if (userFromEmail.passwordHash === null)
-        return reply.status(StatusCodes.BAD_REQUEST).send({
-          statusCode: StatusCodes.BAD_REQUEST,
-          message: 'Usuário não possui uma senha. Use o login social.',
-        })
+        throw new BadRequestError(
+          'Usuário não possui uma senha. Use o login social.'
+        )
 
       const isPasswordValid = await compare(
         password,
         userFromEmail.passwordHash
       )
 
-      if (!isPasswordValid)
-        return reply.status(StatusCodes.BAD_REQUEST).send({
-          statusCode: StatusCodes.BAD_REQUEST,
-          message: 'Credenciais inválidas.',
-        })
+      if (!isPasswordValid) throw new BadRequestError('Credenciais inválidas.')
 
       const token = await reply.jwtSign(
         { sub: userFromEmail.id },

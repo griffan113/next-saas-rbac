@@ -11,6 +11,7 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 import { authRoutes } from './routes/auth'
+import { errorHandler } from './routes/error-handler'
 
 config({ path: '../../.env' })
 
@@ -18,6 +19,8 @@ const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
+
+app.setErrorHandler(errorHandler)
 
 app.register(fastifySwagger, {
   openapi: {

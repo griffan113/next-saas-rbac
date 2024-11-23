@@ -4,6 +4,7 @@ import { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { StatusCodes } from 'http-status-codes'
 import { z } from 'zod'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function createAccount(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -27,10 +28,7 @@ export async function createAccount(app: FastifyInstance) {
       })
 
       if (userWithSameEmail)
-        reply.status(StatusCodes.BAD_REQUEST).send({
-          statusCode: StatusCodes.BAD_REQUEST,
-          message: 'Este e-mail já está sendo utilizado.',
-        })
+        throw new BadRequestError('Este e-mail já está sendo utilizado.')
 
       const [, domain] = email.split('@')
 
