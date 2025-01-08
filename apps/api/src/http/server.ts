@@ -2,7 +2,7 @@ import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
-import { config } from 'dotenv'
+import { env } from '@saas/env'
 import { fastify } from 'fastify'
 import {
   jsonSchemaTransform,
@@ -12,8 +12,6 @@ import {
 } from 'fastify-type-provider-zod'
 import { authRoutes } from './routes/auth'
 import { errorHandler } from './routes/error-handler'
-
-config({ path: '../../.env' })
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -29,7 +27,15 @@ app.register(fastifySwagger, {
       description: 'Full-stack SaaS app with multi-tenant and RBAC',
       version: '1.0.0',
     },
-    servers: [],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'jwt',
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 
@@ -43,7 +49,7 @@ app.register(fastifySwagger, {
 app.register(fastifySwaggerUi, { routePrefix: '/docs' })
 
 app.register(fastifyJwt, {
-  secret: process.env.JWT_SECRET || 'jwt-example',
+  secret: env.JWT_SECRET,
 })
 
 app.register(fastifyCors)
@@ -51,6 +57,6 @@ app.register(fastifyCors)
 // Modules
 app.register(authRoutes)
 
-app.listen({ port: 3001 }).then(() => {
+app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running')
 })
