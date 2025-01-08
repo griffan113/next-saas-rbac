@@ -8,14 +8,17 @@
     "seed": "tsx prisma/seed.ts"
   },
   "scripts": {
-    "prisma": "pnpm with-env prisma",
-    "with-env": "dotenv -e ../../.env --"
+    "prisma": "pnpm env:load prisma",
+    "db:migrate": "pnpm env:load prisma migrate dev",
+    "db:studio": "pnpm env:load prisma studio",
+    "env:load": "dotenv -e ../../.env --"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.2.0",
     "@saas/eslint": "workspace:*",
     "@saas/prettier": "workspace:*",
     "@saas/tsconfig": "workspace:*",
+    "@saas/env": "workspace:*",
     "@types/bcryptjs": "^2.4.6",
     "dotenv-cli": "^7.4.3",
     "prisma": "^5.22.0",
@@ -31,7 +34,6 @@
     "@casl/ability": "^6.7.2",
     "@prisma/client": "5.22.0",
     "bcryptjs": "^2.4.3",
-    "dotenv": "^16.4.5",
     "zod": "^3.23.8"
   }
 }
