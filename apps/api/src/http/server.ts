@@ -12,6 +12,7 @@ import {
 } from 'fastify-type-provider-zod'
 import { authRoutes } from './routes/auth'
 import { errorHandler } from './routes/error-handler'
+import { organizationsRoutes } from './routes/organizations'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -56,6 +57,7 @@ app.register(fastifyCors)
 
 // Modules
 app.register(authRoutes)
+app.register(organizationsRoutes, { prefix: '/organizations' })
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running')
