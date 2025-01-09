@@ -59,7 +59,7 @@ export function createOrganization(app: FastifyInstance) {
           },
         })
 
-        return reply.status(201).send({
+        return reply.status(StatusCodes.CREATED).send({
           organizationId: organization.id,
         })
       }

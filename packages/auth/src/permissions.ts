@@ -10,6 +10,8 @@ type PermissionsByRole = (
 
 export const permissions: Record<Role, PermissionsByRole> = {
   ADMIN(user, { can, cannot }) {
+    console.log('salve salve')
+
     can('manage', 'all')
 
     cannot(['transfer_ownership', 'update'], 'Organization')

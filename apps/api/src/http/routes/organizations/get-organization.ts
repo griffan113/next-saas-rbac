@@ -1,6 +1,5 @@
 import { auth } from '@/http/middlewares/auth'
-import { rolesSchema } from '@saas/auth'
-import { organizationModelSchema, Role } from '@saas/database'
+import { organizationModelSchema } from '@saas/database'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { StatusCodes } from 'http-status-codes'
