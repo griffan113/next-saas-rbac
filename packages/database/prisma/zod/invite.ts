@@ -7,7 +7,7 @@ export const inviteModelSchema = z.object({
   email: z.string(),
   role: z.nativeEnum(Role),
   createdAt: z.date(),
-  userId: z.string().nullish(),
+  authorId: z.string().nullish(),
   organizationId: z.string(),
 })
 
