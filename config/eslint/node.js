@@ -3,5 +3,6 @@ module.exports = {
   extends: ['@rocketseat/eslint-config/node'],
   rules: {
     'simple-import-sort/imports': 'error',
+    'no-unused-vars': 'error',
   },
 }
