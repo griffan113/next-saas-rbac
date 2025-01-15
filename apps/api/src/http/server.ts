@@ -12,6 +12,7 @@ import {
 } from 'fastify-type-provider-zod'
 import { authRoutes } from './routes/auth'
 import { errorHandler } from './routes/error-handler'
+import { membersRoutes } from './routes/members'
 import { organizationsRoutes } from './routes/organizations'
 import { projectsRoutes } from './routes/projects'
 
@@ -60,6 +61,7 @@ app.register(fastifyCors)
 app.register(authRoutes)
 app.register(organizationsRoutes, { prefix: '/organizations' })
 app.register(projectsRoutes, { prefix: '/organizations' })
+app.register(membersRoutes, { prefix: '/organizations' })
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running')
