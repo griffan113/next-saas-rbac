@@ -11,6 +11,7 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 import { authRoutes } from './routes/auth'
+import { billingRoutes } from './routes/billing'
 import { errorHandler } from './routes/error-handler'
 import { invitesRoutes } from './routes/invites'
 import { membersRoutes } from './routes/members'
@@ -64,6 +65,7 @@ app.register(organizationsRoutes, { prefix: '/organizations' })
 app.register(projectsRoutes, { prefix: '/organizations' })
 app.register(membersRoutes, { prefix: '/organizations' })
 app.register(invitesRoutes)
+app.register(billingRoutes, { prefix: '/organizations' })
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running')

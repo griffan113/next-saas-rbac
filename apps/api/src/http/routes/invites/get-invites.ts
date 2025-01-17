@@ -12,7 +12,7 @@ export function getInvites(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .post(
+    .get(
       '/organizations/:slug/invites',
       {
         schema: {
