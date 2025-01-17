@@ -63,7 +63,7 @@ app.register(authRoutes)
 app.register(organizationsRoutes, { prefix: '/organizations' })
 app.register(projectsRoutes, { prefix: '/organizations' })
 app.register(membersRoutes, { prefix: '/organizations' })
-app.register(invitesRoutes, { prefix: '/organizations' })
+app.register(invitesRoutes)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running')

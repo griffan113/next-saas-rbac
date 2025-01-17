@@ -1,5 +1,4 @@
 import { auth } from '@/http/middlewares/auth'
-import { generateSlug } from '@/utils/generate-slug'
 import { getUserPermissions } from '@/utils/get-user-permissions'
 import { rolesSchema } from '@saas/auth'
 import { prisma } from '@saas/database'
@@ -15,7 +14,7 @@ export function createInvite(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .post(
-      '/:slug/invites',
+      '/organizations/:slug/invites',
       {
         schema: {
           tags: ['Invite'],
@@ -52,7 +51,7 @@ export function createInvite(app: FastifyInstance) {
 
         const { email, role } = request.body
 
-        const [, domain] = email
+        const [, domain] = email.split('@')
 
         if (
           organization.shouldAttachUsersByDomain &&
