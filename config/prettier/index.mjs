@@ -6,6 +6,7 @@ const config = {
     "prettier-plugin-tailwindcss",
     "@ianvs/prettier-plugin-sort-imports",
   ],
+  importOrder: ["<BUILTIN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]"],
   printWidth: 80,
   tabWidth: 2,
   useTabs: false,

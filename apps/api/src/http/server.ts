@@ -10,6 +10,7 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
+
 import { authRoutes } from './routes/auth'
 import { billingRoutes } from './routes/billing'
 import { errorHandler } from './routes/error-handler'

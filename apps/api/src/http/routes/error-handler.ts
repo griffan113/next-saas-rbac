@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod'
 import { StatusCodes } from 'http-status-codes'
+
 import { GenericError } from './_errors/generic-error'
 
 type FastifyErrorHandler = FastifyInstance['errorHandler']
