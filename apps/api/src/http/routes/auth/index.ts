@@ -4,6 +4,7 @@ import { authenticateWithPassword } from './authenticate-with-password'
 import { createAccount } from './create-account'
 import { getProfile } from './get-profile'
 import { requestPasswordRecover } from './request-password-recover'
+import { resetPassword } from './reset-password'
 
 export async function authRoutes(app: FastifyInstance) {
   app.register(createAccount, { prefix: '/users' })
@@ -11,4 +12,5 @@ export async function authRoutes(app: FastifyInstance) {
   app.register(authenticateWithGitHub)
   app.register(getProfile)
   app.register(requestPasswordRecover)
+  app.register(resetPassword)
 }
