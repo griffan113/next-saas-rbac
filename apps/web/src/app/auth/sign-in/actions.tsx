@@ -2,6 +2,7 @@
 
 import { signInWithPassword } from '@/http/sign-in-with-password'
 import { HTTPError } from 'ky'
+import { cookies } from 'next/headers'
 import { z } from 'zod'
 
 const signInSchema = z.object({
@@ -21,9 +22,16 @@ export async function signInWithEmailAndPassword(data: FormData) {
   const { email, password } = result.data
 
   try {
-    const { token: _ } = await signInWithPassword({
+    const { token } = await signInWithPassword({
       email,
       password,
+    })
+
+    const requestCookies = await cookies()
+
+    requestCookies.set('auth_token', token, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
     })
   } catch (error) {
     if (error instanceof HTTPError) {
