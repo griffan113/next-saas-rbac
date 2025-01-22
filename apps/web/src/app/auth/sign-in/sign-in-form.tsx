@@ -12,6 +12,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+import { signInWithGithub } from '../actions'
 import { signInWithEmailAndPassword } from './actions'
 
 export function SignInForm() {
@@ -23,58 +24,67 @@ export function SignInForm() {
   )
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {success === false && message && (
-        <Alert variant="destructive">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Falha no login</AlertTitle>
-          <AlertDescription>
-            <p>{message}</p>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      <div className="space-y-1">
-        <Label htmlFor="email">E-mail</Label>
-        <Input name="email" type="text" id="email" />
-
-        {errors?.email && (
-          <p className="text-xs font-medium text-destructive">
-            {errors.email[0]}
-          </p>
+    <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {success === false && message && (
+          <Alert variant="destructive">
+            <AlertTriangle className="size-4" />
+            <AlertTitle>Falha no login</AlertTitle>
+            <AlertDescription>
+              <p>{message}</p>
+            </AlertDescription>
+          </Alert>
         )}
-      </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="password">Senha</Label>
-        <Input name="password" type="password" id="password" />
+        <div className="space-y-1">
+          <Label htmlFor="email">E-mail</Label>
+          <Input name="email" type="text" id="email" />
 
-        <Link
-          href="/auth/forgot-password"
-          className="text-xs font-medium text-foreground hover:underline"
-        >
-          Esqueceu sua senha?
-        </Link>
-      </div>
+          {errors?.email && (
+            <p className="text-xs font-medium text-destructive dark:text-red-500">
+              {errors.email[0]}
+            </p>
+          )}
+        </div>
 
-      <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? (
-          <Loader2 className="size-4 animate-spin" />
-        ) : (
-          'Entrar com o e-mail'
-        )}
-      </Button>
+        <div className="space-y-1">
+          <Label htmlFor="password">Senha</Label>
+          <Input name="password" type="password" id="password" />
 
-      <Button variant="link" className="w-full" size="sm" asChild>
-        <Link href="/auth/sign-up">Criar uma nova conta</Link>
-      </Button>
+          {errors?.password && (
+            <p className="text-xs font-medium text-destructive dark:text-red-500">
+              {errors.password[0]}
+            </p>
+          )}
 
+          <Link
+            href="/auth/forgot-password"
+            className="text-xs font-medium text-foreground hover:underline"
+          >
+            Esqueceu sua senha?
+          </Link>
+        </div>
+
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            'Entrar com o e-mail'
+          )}
+        </Button>
+
+        <Button variant="link" className="w-full" size="sm" asChild>
+          <Link href="/auth/sign-up">Criar uma nova conta</Link>
+        </Button>
+      </form>
       <Separator />
 
-      <Button className="w-full" variant="outline">
-        <Image src={githubIcon} alt="" className="size-4 mr-2 dark:invert" />
-        Entrar com GitHub
-      </Button>
-    </form>
+      <form action={signInWithGithub}>
+        <Button type="submit" className="w-full" variant="outline">
+          <Image src={githubIcon} alt="" className="size-4 mr-2 dark:invert" />
+          Entrar com GitHub
+        </Button>
+      </form>
+    </div>
   )
 }
